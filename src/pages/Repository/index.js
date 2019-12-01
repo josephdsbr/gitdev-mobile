@@ -1,11 +1,20 @@
-import React, {Component} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default class Repository extends Component {
-  static navigationOptions = ({navigation}) => ({
-    title: navigation.getParam('repository').name,
-  });
+import {Browser} from './styles';
 
-  render() {
-    return <WebView source={{uri: 'https://infinite.red'}} />;
-  }
+export default function Repository({navigation}) {
+  const repository = navigation.getParam('repository');
+
+  return <Browser source={{uri: repository.html_url}} />;
 }
+
+Repository.propTypes = {
+  navigation: PropTypes.shape({
+    getParam: PropTypes.func,
+  }).isRequired,
+};
+
+Repository.navigationOptions = ({navigation}) => ({
+  title: navigation.getParam('repository').name,
+});

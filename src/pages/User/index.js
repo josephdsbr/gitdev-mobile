@@ -9,7 +9,6 @@ import {
   Avatar,
   Name,
   Bio,
-  Loading,
   Stars,
   Starred,
   OwnerAvatar,
@@ -55,7 +54,6 @@ export default class User extends Component {
     this.setState({
       stars: page >= 2 ? [...stars, ...response.data] : response.data,
       page,
-      loading: false,
       refreshing: false,
     });
   };
@@ -80,10 +78,9 @@ export default class User extends Component {
 
   render() {
     const {navigation} = this.props;
-    const {stars, loading, refreshing} = this.state;
+    const {stars, refreshing} = this.state;
 
     const user = navigation.getParam('user');
-
     return (
       <Container>
         <Header>
@@ -100,9 +97,9 @@ export default class User extends Component {
           onEndReached={this.loadMore}
           keyExtractor={star => String(star.id)}
           renderItem={({item}) => (
-            <Starred onPress={() => this.handleNavigate(item)}>
+            <Starred>
               <OwnerAvatar source={{uri: item.owner.avatar_url}} />
-              <Info>
+              <Info onPress={() => this.handleNavigate(item)}>
                 <Title>{item.name}</Title>
                 <Author>{item.owner.login}</Author>
               </Info>
